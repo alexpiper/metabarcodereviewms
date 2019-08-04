@@ -1,0 +1,65 @@
+YearPub,Search,Papers
+2012,454,2
+2013,454,6
+2014,454,7
+2015,454,12
+2016,454,17
+2017,454,11
+2018,454,6
+2019,454,3
+2012,HiSeq,NA
+2013,HiSeq,1
+2014,HiSeq,NA
+2015,HiSeq,1
+2016,HiSeq,1
+2017,HiSeq,NA
+2018,HiSeq,NA
+2019,HiSeq,NA
+2012,MiSeq,NA
+2013,MiSeq,1
+2014,MiSeq,3
+2015,MiSeq,6
+2016,MiSeq,21
+2017,MiSeq,18
+2018,MiSeq,27
+2019,MiSeq,13
+2012,NextSeq,NA
+2013,NextSeq,NA
+2014,NextSeq,NA
+2015,NextSeq,NA
+2016,NextSeq,NA
+2017,NextSeq,NA
+2018,NextSeq,1
+2019,NextSeq,NA
+2012,NovaSeq,NA
+2013,NovaSeq,NA
+2014,NovaSeq,NA
+2015,NovaSeq,NA
+2016,NovaSeq,NA
+2017,NovaSeq,NA
+2018,NovaSeq,NA
+2019,NovaSeq,1
+2012,PacBio,NA
+2013,PacBio,NA
+2014,PacBio,NA
+2015,PacBio,NA
+2016,PacBio,1
+2017,PacBio,1
+2018,PacBio,4
+2019,PacBio,2
+2012,Ion Torrent,NA
+2013,Ion Torrent,2
+2014,Ion Torrent,1
+2015,Ion Torrent,3
+2016,Ion Torrent,4
+2017,Ion Torrent,3
+2018,Ion Torrent,10
+2019,Ion Torrent,3
+2012,Nanopore,NA
+2013,Nanopore,NA
+2014,Nanopore,NA
+2015,Nanopore,NA
+2016,Nanopore,NA
+2017,Nanopore,NA
+2018,Nanopore,NA
+2019,Nanopore,2
