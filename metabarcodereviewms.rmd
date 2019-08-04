@@ -1,7 +1,7 @@
 ---
 title: Prospects and challenges of implementing DNA metabarcoding for high-throughput
   insect surveillance
-subtitle: Supplementary Information 1
+subtitle: Additional file 1
 author: "A.M. Piper, J. Batovska, N.O.I. Cogan, J. Weiss, J.P Cunningham, B.C. Rodoni, M.J. Blacket"
 date: "2019/06/19"
 output:
@@ -12,7 +12,7 @@ output:
 ```{r setup, include=FALSE}
 # Knitr global setup - change eval to true to run code
 library(knitr)
-knitr::opts_chunk$set(echo = TRUE, eval=FALSE, fig.show = "asis", fig.keep = "all")
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE,message=FALSE, fig.show = "asis", fig.keep = "all")
 
 ```
 
@@ -20,10 +20,26 @@ knitr::opts_chunk$set(echo = TRUE, eval=FALSE, fig.show = "asis", fig.keep = "al
 
 This RMarkdown document contains the reproducible workflow that performed the analyses presented for the manuscript *Prospects and Challenges of implementing DNA metabarcoding for High-Throughput Surveillance of Trapped insects* by Alexander M. Piper, Jana Batovska, Noel O.I. Cogan, John Weiss, John Paul Cunningham, Brendan C. Rodoni and Mark J. Blacket
 
+
+# Supplementary table 1: Keywords used to filter articles
+
+```{r,include=FALSE,eval=TRUE}
+keywords <- kable(data.frame(Fig1A=c("invasive","detection","surveillance","diagnostic","alien","nonindigenous","non indigenous", "biosecurity", "exotic"),Fig1B=c("454 OR pyroseq", "hiseq", "miseq", "nextseq", "novaseq", "pacbio OR pacific biosciences", "mgiseq", "ion torrent", "nanopore OR minion OR promethion")))
+```
+
+```{r plot kable,echo=FALSE,eval=TRUE}
+keywords
+```
+
+\pagebreak
+
+
+# Supplementary information 1: Reproducible R Code to produce Figure 1
+
 ### Setup workspace and load required packages 
 ```{r Load required packages,eval=TRUE, echo=FALSE,message=FALSE,warning=FALSE}
 sapply(c("rentrez","bold", "seqinr","taxize","biofiles", "tidyverse",
-         "scales","gridExtra","grid","readr","fulltext","data.table",
+         "scales","gridExtra","grid","fulltext","data.table",
          "ggpubr", "rscopus","tidystringdist"), require, character.only = TRUE)
 ```
 
@@ -125,32 +141,7 @@ df_all <- df_all %>%
 write_csv(df_all, path=paste0("data/fig1/merged_citations_",Sys.Date(),".csv"))
 ```
 
-### Keyword processing of retrieved articles
-
-The keywords used are:
-
-Figure 1A - Invasive species keywords
-  + invasive
-  + detection
-  + surveillance
-  + diagnostic
-  + alien
-  + nonindigenous
-  + non indigenous
-  + biosecurity
-  + exotic
-
-Figure 1B - Sequencing platform keywords
-  + 454 OR pyroseq
-  + hiseq
-  + miseq
-  + nextseq
-  + novaseq
-  + pacbio OR pacific biosciences
-  + mgiseq
-  + ion torrent
-  + nanopore OR minion OR promethion
-  
+### Keyword filtering of retrieved articles
 
 ```{r Keyword processing, eval=FALSE}
 #Fig 1A
@@ -240,22 +231,21 @@ df_1b <- left_join(search_454, search_hiseq, by="YearPub") %>%
 write_csv(df_1b, path="data/fig1/litsearch_1b.csv")
 ```
 
-### Figure 1 plotting
-
-* Figure 1a - Published for for all metabarcoding studies, and those containing keywords in title or abstract relevant to invasive insect surveillance
-* Figure 1b - Sequencing platforms used in the above metabarcoding studies displayed as a proportion for each year.
+### Create Figure
 
 The csv files for fig 1a and fig1b are read back into R and plotted using ggplot. ggarrange from the package ggpubr is then used to produce the Fig 1 multiplot
 
-```{r Figure 1, eval=TRUE, message=FALSE,warning=FALSE}
+```{r Figure 1, eval=FALSE, message=FALSE,warning=FALSE}
 #Read in data
-df_1a <- read_csv("data/fig1/litsearch_1a.csv") %>%
+df_1a <- readr::read_csv("data/fig1/litsearch_1a.csv") %>%
+  #rename(Search = search) %>%
   mutate(Search = str_replace(Search, "invasive", "Containing Keywords: \n
                               Invasive, Detection, Surveillance 
                               \n Diagnostic, Alien, Nonindigenous, 
                               \n Biosecurity Exotic") %>%
            str_replace("Metabarcod", "All Metabarcoding"))
 df_1b <- read_csv("data/fig1/litsearch_1b.csv") %>%
+  #rename(Search = search) %>%
   mutate(Search = forcats::fct_relevel(Search, levels = c("454","Ion Torrent",
                                                           "HiSeq", "MiSeq",
                                                           "NextSeq","NovaSeq",
@@ -294,13 +284,12 @@ p2 <- ggplot(df_1b, aes(fill=Search, y=Papers, x=YearPub)) +
 Fig1 <- ggarrange(p1, p2, 
           ncol = 1, nrow = 2, labels = c("A","B"),
           heights = c(4, 2))
+
+plot(Fig1)
 ```
+\pagebreak
 
-## Figure 2 - Overview of common metabarcoding workflows for identification of trapped insect species 
-
-Figure 2 is an overview of common metabarcoding workflows revealed by a literature search. The figure itself was made entirely in Adobe Illustrator.
-
-## Figure 3- DNA barcodes on public reference databases
+# Supplementary information 2: Reproducible R Code to produce Figure 3
 
 This figure compares the taxanomic, geographic, and dna barcode loci coverage of all insecta, and priority pest insects over NCBI GenBank and BOLD. While GenBank hosts greater overall sequence data, BOLD represents a curated database of loci used for DNA barcoding. Therefore, for direct comparison we will only use the loci contained on bold to query both databases.
 
@@ -874,7 +863,7 @@ write.csv(merged, file="data/fig3/merged_insecta_pest_bold_gb.csv")
 
 All barcode records for every loci that contained lattitude and longitude information were then plotted on a world map
 
-```{R plot figure 3a, eval=TRUE,warnings=FALSE,message=FALSE,errors=FALSE}
+```{R plot figure 3a, eval=FALSE,warnings=FALSE,message=FALSE,errors=FALSE}
 #Read in data
 merged <- read_csv("data/fig3/merged_insecta_pest_bold_gb.csv", na = c("","NA")) %>%
   mutate(lat = as.numeric(lat)) %>%
@@ -928,7 +917,7 @@ plot(p3)
 
 The occurance of records and genes for the 10 barcode markers with the most reference information in both datasets were then plotted. Despite the PER gene appearing in this top 10, closer inspection revealed that this was due to many records studies on clock genes not DNA barcoding and therefore this gene was excluded from the plot.
 
-```{r Figure 3b , eval=TRUE, warning=FALSE,message=FALSE}
+```{r Figure 3b , eval=FALSE, warning=FALSE,message=FALSE}
 #Read in data & remove PER from dataset
 merged <- read_csv(file="data/fig3/merged_insecta_pest_bold_gb.csv") %>%
   dplyr::filter(!str_detect("PER",loci))
@@ -988,18 +977,8 @@ print(paste0(sum((all_count %>% dplyr::filter(set == "pest_records"))$count),
 plot(p4)
 ```
 
-### Plot final figure 3
+## R Session info
 
-The two sub figures were combined, then further edited in Adobe Illustrator
-
-```{r plot combined figure}
-Fig3 <- ggarrange(p3, p4, 
-          ncol = 1, nrow = 2, labels = c("A","B"),
-          heights = c(7, 4), widths= c(2,1))
+```{r,eval=TRUE}
+sessionInfo()
 ```
-
-
-## Figure 4 - Unique dual indexing overcomes issues of cross-contamination due to index switching
-
-Figure 4 is an overview of common metabarcoding workflows revealed by a literature search. The figure itself was made entirely in Adobe Illustrator.
-
